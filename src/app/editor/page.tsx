@@ -12,7 +12,7 @@ export default function EditorPage() {
   const { areas, loading, error, createArea } = useAreas();
   const [selectedArea, setSelectedArea] = useState<string | null>(null);
   const [showCreateDialog, setShowCreateDialog] = useState(false);
-
+  console.log("selectedArea", selectedArea);
   if (loading) {
     return (
       <div className="flex h-screen items-center justify-center">
