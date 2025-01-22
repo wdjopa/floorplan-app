@@ -1,5 +1,12 @@
 import { useEffect, useState } from "react";
-import Moveable from "react-moveable";
+import Moveable, {
+  OnDrag,
+  OnDragEnd,
+  OnResize,
+  OnResizeEnd,
+  OnRotate,
+  OnRotateEnd,
+} from "react-moveable";
 import { Table } from "@/types";
 
 interface TableEditorProps {
@@ -36,8 +43,8 @@ export default function TableEditor({
     <>
       <div
         id={`table-${table.id}`}
-        className={`absolute cursor-pointer border bg-white transition-shadow hover:shadow-md ${
-          selected ? "border-primary shadow-lg" : "border-gray-200"
+        className={`absolute cursor-pointer  bg-white transition-shadow hover:shadow-md border bg-green-100  rounded-lg ${
+          selected ? "border-primary shadow-lg" : "border-green-400"
         }`}
         style={{
           left: `${table.coordinates.x}px`,
@@ -61,56 +68,66 @@ export default function TableEditor({
       {selected && target && (
         <Moveable
           target={target}
-          container={null}
           draggable={true}
           resizable={true}
           rotatable={true}
           snappable={true}
           snapCenter={true}
-          elementSnapDirections={{
-            top: true,
-            left: true,
-            bottom: true,
-            right: true,
+          origin={false}
+          onDrag={({ target, beforeTranslate }: OnDrag) => {
+            const [dx, dy] = beforeTranslate;
+
+            // Calculate new position relative to the initial position
+            const newX = table.coordinates.x + dx;
+            const newY = table.coordinates.y + dy;
+
+            target.style.left = `${newX}px`;
+            target.style.top = `${newY}px`;
           }}
-          verticalGuidelines={[0, 100, 200, 300, 400, 500]} // Add more as needed
-          horizontalGuidelines={[0, 100, 200, 300, 400, 500]} // Add more as needed
-          onDrag={({ target, transform }) => {
-            target.style.transform = transform;
-          }}
-          onDragEnd={({ target, transform }) => {
-            const matrix = new DOMMatrix(transform);
+          onDragEnd={({ isDrag, lastEvent }: OnDragEnd) => {
+            if (!isDrag || !lastEvent) return;
+
+            const [dx, dy] = lastEvent.beforeTranslate;
+
             updateCoordinates({
-              x: matrix.e,
-              y: matrix.f,
+              x: table.coordinates.x + dx,
+              y: table.coordinates.y + dy,
             });
           }}
-          onResize={({ target, width, height, drag }) => {
+          onResize={({ target, width, height, drag }: OnResize) => {
+            const [dx, dy] = drag.beforeTranslate;
+
+            // Calculate new size and position
+            const newX = table.coordinates.x + dx;
+            const newY = table.coordinates.y + dy;
+
             target.style.width = `${width}px`;
             target.style.height = `${height}px`;
-            target.style.transform = drag.transform;
+            target.style.left = `${newX}px`;
+            target.style.top = `${newY}px`;
           }}
-          onResizeEnd={({ target, width, height, drag }) => {
-            const matrix = new DOMMatrix(drag.transform);
+          onResizeEnd={({ isDrag, lastEvent }: OnResizeEnd) => {
+            if (!isDrag || !lastEvent) return;
+
+            const { width, height } = lastEvent;
+            const [dx, dy] = lastEvent.drag.beforeTranslate;
+
             updateCoordinates({
               width,
               height,
-              x: matrix.e,
-              y: matrix.f,
+              x: table.coordinates.x + dx,
+              y: table.coordinates.y + dy,
             });
           }}
-          onRotate={({ target, transform }) => {
-            target.style.transform = transform;
+          onRotate={({ target, rotate }: OnRotate) => {
+            target.style.transform = `rotate(${rotate}deg)`;
           }}
-          onRotateEnd={({ target, rotate }) => {
+          onRotateEnd={({ isDrag, lastEvent }: OnRotateEnd) => {
+            if (!isDrag || !lastEvent) return;
             updateCoordinates({
-              rotation: rotate,
+              rotation: lastEvent.rotation,
             });
           }}
-          padding={{ left: 0, top: 0, right: 0, bottom: 0 }}
-          origin={false}
-          guides={true}
-          keepRatio={false}
         />
       )}
     </>
