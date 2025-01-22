@@ -8,7 +8,6 @@ const GenukaContext = createContext<ReturnType<typeof useGenuka> | undefined>(
 
 export function GeunkaProvider({ children }: { children: ReactNode }) {
   const genukaState = useGenuka();
-console.log({genukaState});
   return (
     <GenukaContext.Provider value={genukaState}>
       {children}

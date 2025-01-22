@@ -1,8 +1,9 @@
-import { Inter } from "next/font/google";
-import { GeunkaProvider } from "@/providers/genuka";
-import "./globals.css";
-import { FirebaseAuth } from "@/components/FirebaseAuth";
 import { AuthProvider } from "@/components/AuthProvider";
+import { FirebaseAuth } from "@/components/FirebaseAuth";
+import { GeunkaProvider } from "@/providers/genuka";
+import { Inter } from "next/font/google";
+import "./globals.css";
+import { Suspense } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,12 +20,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <AuthProvider>
+        <Suspense fallback={<>...</>}>
           <GeunkaProvider>
-            <FirebaseAuth />
-            {children}
+            <AuthProvider>
+              <FirebaseAuth />
+              {children}
+            </AuthProvider>
           </GeunkaProvider>
-        </AuthProvider>
+        </Suspense>
       </body>
     </html>
   );
