@@ -19,15 +19,29 @@ export default function TableGrid({ areaId, onTableSelect }: TableGridProps) {
   }
 
   return (
-    <div className="relative min-h-[600px] w-full border bg-white">
-      {tables.map((table) => (
-        <TableItem
-          key={table.id}
-          table={table}
-          onClick={() => onTableSelect(table.id)}
-        />
-      ))}
+    <div className="flex h-[calc(100vh-10rem)] flex-col gap-4">
+      <div className="relative flex-1 overflow-hidden">
+        <div className="relative h-full w-full rounded-lg border bg-white">
+          {tables.map((table) => (
+            <TableItem
+              key={table.id}
+              table={table}
+              onClick={() => onTableSelect(table.id)}
+            />
+          ))}
+        </div>
+      </div>
     </div>
+
+    // <div className="relative min-h-[600px] w-full border bg-white">
+    //   {tables.map((table) => (
+    //     <TableItem
+    //       key={table.id}
+    //       table={table}
+    //       onClick={() => onTableSelect(table.id)}
+    //     />
+    //   ))}
+    // </div>
   );
 }
 
