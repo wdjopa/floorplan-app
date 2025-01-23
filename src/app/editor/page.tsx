@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Loader2, Plus } from "lucide-react";
 import WorkspaceEditor from "@/components/editor/WorkspaceEditor";
 import CreateAreaDialog from "@/components/editor/CreateAreaDialog";
+import Link from "next/link";
 
 export default function EditorPage() {
   const { areas, loading, error, createArea } = useAreas();
@@ -33,7 +34,12 @@ export default function EditorPage() {
     <div className="min-h-screen bg-background">
       <header className="border-b">
         <div className="flex h-16 items-center px-4">
-          <h1 className="text-lg font-semibold">Floor Plan Editor</h1>
+          <h1 className="text-lg font-semibold">
+            <Link href="/floorplan" replace>
+              Floorplan
+            </Link>{" "}
+            /<Link href="/editor">Editor</Link>
+          </h1>
           <div className="ml-auto flex items-center space-x-4">
             <Button
               onClick={() => setShowCreateDialog(true)}

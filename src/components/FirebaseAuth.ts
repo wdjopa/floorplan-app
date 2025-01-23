@@ -10,7 +10,7 @@ export function FirebaseAuth() {
   const router = useRouter();
 
   useEffect(() => {
-    const token = searchParams.get("token");
+    const token = searchParams.get("token") || localStorage.getItem("token");
     if (token) {
       signInWithCustomToken(auth, token)
         .then(() => {

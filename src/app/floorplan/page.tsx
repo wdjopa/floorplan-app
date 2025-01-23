@@ -8,6 +8,7 @@ import { useGenukaContext } from "@/providers/genuka";
 import { Loader2 } from "lucide-react";
 import TableGrid from "../../components/floorplan/TableGrid";
 import BookingModal from "../../components/floorplan/BookingModal";
+import { useRouter } from "next/navigation";
 
 export default function FloorplanPage() {
   const { loading: genukaLoading } = useGenukaContext();
@@ -15,6 +16,7 @@ export default function FloorplanPage() {
   const [selectedArea, setSelectedArea] = useState<string | null>(null);
   const [selectedTable, setSelectedTable] = useState<string | null>(null);
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
+  const router = useRouter();
 
   if (genukaLoading) {
     return (
@@ -39,10 +41,7 @@ export default function FloorplanPage() {
         <div className="flex h-16 items-center px-4">
           <h1 className="text-lg font-semibold">Floorplan Management</h1>
           <div className="ml-auto flex items-center space-x-4">
-            <Button
-              variant="outline"
-              onClick={() => (window.location.href = "/editor")}
-            >
+            <Button variant="outline" onClick={() => router.push("/editor")}>
               Edit Floorplan
             </Button>
           </div>
@@ -89,10 +88,7 @@ export default function FloorplanPage() {
               <p className="text-muted-foreground">
                 Create areas and tables in the editor first.
               </p>
-              <Button
-                className="mt-4"
-                onClick={() => (window.location.href = "/editor")}
-              >
+              <Button className="mt-4" onClick={() => router.push("/editor")}>
                 Go to Editor
               </Button>
             </div>

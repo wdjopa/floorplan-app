@@ -1,28 +1,22 @@
 "use client";
 import Image from "next/image";
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 
 export default function Home() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const companyId =
+    searchParams.get("company_id") || localStorage.getItem("company_id");
 
   useEffect(() => {
-    const companyId = searchParams.get("company_id");
-
-    // If we have company_id in URL, redirect to floorplan
     if (companyId) {
-      // Preserve all query parameters when redirecting
-      const params = new URLSearchParams();
-      for (const [key, value] of searchParams.entries()) {
-        params.append(key, value);
-      }
-      router.replace(`/floorplan?${params.toString()}`);
+      router.push("/floorplan");
     }
-  }, [searchParams, router]);
+  }, [companyId, router]);
 
   // If no company_id, show landing page
-  if (!searchParams.get("company_id")) {
+  if (!companyId) {
     // Get all URL Params
     return (
       <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">

@@ -10,6 +10,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   if (error) {
+    localStorage.removeItem("token");
+    window.location.reload()
     return <div>Error: {error.message}</div>;
   }
 

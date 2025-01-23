@@ -19,7 +19,7 @@ export default function TableGrid({ areaId, onTableSelect }: TableGridProps) {
   }
 
   return (
-    <div className="relative h-[600px] w-full border bg-white">
+    <div className="relative min-h-[600px] w-full border bg-white">
       {tables.map((table) => (
         <TableItem
           key={table.id}
@@ -40,7 +40,7 @@ function TableItem({ table, onClick }: TableItemProps) {
   return (
     <div
       onClick={onClick}
-      className="absolute cursor-pointer border bg-white hover:bg-gray-50"
+      className="absolute cursor-pointer border bg-white hover:bg-gray-50 rounded-lg !bg-green-100"
       style={{
         left: `${table.coordinates.x}px`,
         top: `${table.coordinates.y}px`,
